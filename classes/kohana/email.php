@@ -433,6 +433,46 @@ class Kohana_Email {
 		return $total;
 	}
 
+  /**
+   * Adds current message to the database queue.
+   *
+   * @param $queue   Optional queue ID name.
+   * @return Email   Returns the current instance of this class.
+   */
+    public function queue($label = NULL)
+    {
+      $queue = ORM::factory('emailqueue')
+        ->set('label', $label)
+        ->set('email', serialize($this))
+        ->save();
+
+      return $queue->saved();
+    }
+
+  /**
+   * Sends queued emails removing them from the database if succes.
+   *
+   * @param  string  $label    Optional label used to select the emails to be sent.
+   * @param  int     $amount   Amount of messages it will try to send per request.
+   * @return int     The amount of messages truly delivered.
+   */
+  public static function send_queued($label = NULL, $amount = 100)
+  {
+    $sent  = 0;
+    $queue = ORM::factory('emailqueue')->get_emails($label, $amount);
+    foreach ($queue as $item)
+    {
+      $message = unserialize($item->email);
+      if ($message->send())
+      {
+        $item->delete();
+        $sent++;
+      }
+    }
+
+    return $sent;
+  }
+
 } // End email
 
 // Load Swiftmailer
