@@ -6,7 +6,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 /*!40101 SET NAMES utf8 */;
 
 
-CREATE TABLE IF NOT EXISTS `emailqueue` (
+CREATE TABLE IF NOT EXISTS `email_queue` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `label` varchar(25) DEFAULT NULL,
   `email` longtext NOT NULL,

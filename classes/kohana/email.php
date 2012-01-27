@@ -443,7 +443,7 @@ class Kohana_Email {
     {
       $queue = ORM::factory('emailqueue')
         ->set('label', $label)
-        ->set('email', serialize($this))
+        ->set('email', base64_encode(gzcompress(serialize($this))))
         ->save();
 
       return $queue->saved();
@@ -462,7 +462,7 @@ class Kohana_Email {
     $queue = ORM::factory('emailqueue')->get_emails($label, $amount);
     foreach ($queue as $item)
     {
-      $message = unserialize($item->email);
+      $message = unserialize(gzuncompress(base64_decode($item->email)));
       if ($message->send())
       {
         $item->delete();
