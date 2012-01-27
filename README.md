@@ -50,7 +50,7 @@ You can also label your emails...
 
 ...or just 25 emails from that single label:
 
-    $emails_sent = Email::send_queued('mylabel');
+    $emails_sent = Email::send_queued('mylabel', 25);
 
 ## Configuration
 
