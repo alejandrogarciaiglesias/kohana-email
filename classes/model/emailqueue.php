@@ -8,6 +8,15 @@ class Model_Emailqueue extends ORM {
 		'format' => 'U'
 	);
 
+  public function filters()
+  {
+    return array(
+      'label' => array(
+        array('trim'),
+      ),
+    );
+  }
+
   public function get_emails($label = NULL, $amount = NULL)
   {
     if ($label)
